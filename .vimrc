@@ -1,10 +1,11 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=$HOME/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'ycm-core/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ajmwagar/vim-dues'
@@ -13,6 +14,9 @@ Plugin 'beyondmarc/glsl.vim'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'raimondi/delimitmate'
 Plugin 'pangloss/vim-javascript'
+Plugin 'dense-analysis/ale'
+Plugin 'tpope/vim-rails'
+Plugin 'Shougo/deoplete.nvim'
 
 "Plugins go before this
 call vundle#end()
@@ -48,3 +52,46 @@ set mouse=a
 set hlsearch
 
 "All necessary things for correct tabbing (2 spaces/tab) and auto indentation
+"based on syntax
+set et
+set sw=2
+set textwidth=80
+set expandtab
+set sts=2
+set smarttab
+set smartindent
+syntax on
+filetype indent on
+set autoindent
+set backspace=indent,eol,start
+set noswapfile
+set incsearch
+
+au! FileType python setl nosmartindent
+
+"Maps space bar to spell checker (initially off)
+nnoremap <space> :set spell!<cr>
+
+"highlights 3 columns after 80 characters, to let you know to end your line
+set colorcolumn=+1 ",+2,+3 "highlight three columns after 'textwidth'
+":set cc=80
+highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+
+"highlights trailing whitespace automatically removes it on write
+highlight ExtraWhitespace ctermbg=cyan guibg=cyan
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+":autocmd InsertLeave * match redraw!
+autocmd BufWritePre * :%s/\s\+$//e
+
+"Key mappings.
+nnoremap gf <C-W>gf
+vnoremap gf <C-W>gf
+
+command W w
+command Q q
+command Wq wq
+command WQ wq
